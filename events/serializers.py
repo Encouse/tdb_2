@@ -13,6 +13,7 @@ class EventSerializer(DynamicFieldsModelSerializer):
     def validate_datetime_end(self, value):
         try:
             dt = dateutil.parser.parse(value)
+            return dt
         except:
             raise serializers.ValidationError('Datetime provided is broken or incorrect')
         
