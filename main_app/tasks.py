@@ -1,6 +1,7 @@
 from celery import Celery
 from django.core.mail import send_mail
 import time
+import pytz
 import dateutil.parser
 from datetime import datetime
 import os
@@ -15,8 +16,8 @@ app.conf.update(BROKER_URL=os.environ.get("REDIS_URL"),
 @app.task()
 def send_event_mail(email, datetime_start, datetime_end, title):
     print(f'{datetime_start} | {datetime_end} input start/end')
-    dtend_utc = datetime_end.replace('+03:00', '+00:00')
-    dtimeend = dateutil.parser.parse(dtend_utc)
+    dtimeend = dateutil.parser.parse(datetime_end).astimezone(pytz.utc)
+    print(f'converted {datetime_end} to {dtimeend} UTC')
     end_sec = time.mktime(dtimeend.timetuple())
     dtimestrt = dateutil.parser.parse(datetime_start)
     start_sec = time.mktime(dtimestrt.timetuple())
