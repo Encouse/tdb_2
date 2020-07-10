@@ -43,5 +43,5 @@ class EventViewSet(MethodModelViewSet):
         obj = models.Event.objects.create(**data)
         print(obj)
         if obj:
-            return Response({'done': 'true', 'obj': obj}, status = status.HTTP_201_CREATED)
+            return Response({'done': 'true', 'obj': 'true'}, status = status.HTTP_201_CREATED)
         return Response(status = status.HTTP_400_BAD_REQUEST)
