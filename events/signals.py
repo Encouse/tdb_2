@@ -8,6 +8,7 @@ from main_app import models, tasks
 def send_mail(sender, instance = None, created = False, **kwargs):
     if created:
         email = instance.user.email
-        datetime = instance.datetime_end
+        datetime_end = instance.datetime_end
+        datetime_start = instance.datetime_start
         title = instance.title
-        tasks.send_event_mail.delay(email, datetime, title)
+        tasks.send_event_mail.delay(email, datetime_start, datetime_end, title)
