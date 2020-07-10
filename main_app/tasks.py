@@ -7,7 +7,7 @@ import os
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'todo_api.settings')
 
-app = Celery('tasks', broker='pyamqp://guest@localhost//')
+app = Celery('tasks')
 app.conf.update(BROKER_URL=os.environ.get("REDIS_URL"),
                 CELERY_RESULT_BACKEND=os.environ.get("REDIS_URL"),)
 
