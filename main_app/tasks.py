@@ -15,6 +15,7 @@ app.conf.update(BROKER_URL=os.environ.get("REDIS_URL"),
 @app.task()
 def send_event_mail(email, datetime_start, datetime_end, title):
     print(f'{datetime_start} | {datetime_end} input start/end')
+    dtend_utc = datetime_end.replace('+03:00', '+00:00')
     dtimeend = dateutil.parser.parse(datetime_end)
     end_sec = time.mktime(dtimeend.timetuple())
     dtimestrt = dateutil.parser.parse(datetime_start)
