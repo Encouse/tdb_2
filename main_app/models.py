@@ -21,3 +21,19 @@ class Event(models.Model):
     datetime_end = models.DateTimeField(
 
     )
+
+# Хранит id тасков celery
+class TaskId(models.Model):
+    # Предположительно евент может вызвать много заданий
+    # При уничтожении евента можно получить доступ к ид
+    # заданий и сделать evoke
+    event = models.ForeignKey(
+        Event,
+        on_delete = models.CASCADE
+    )
+    task_id = models.CharField(
+        max_length = 100
+    )
+    datetime_created = models.DateTimeField(
+        auto_now = True
+    )

@@ -34,6 +34,7 @@ class MethodModelViewSet(viewsets.ModelViewSet):
     # Забирает нужные имена выводимых полей из запроса
     # Выводимый набор полей равен списку переданному в заросе
     def get_list_field_values(self, request):
+        print(request.user)
         flds = request.query_params.get('values', None)
         if flds:
             flds =  flds.strip().strip(' ').split(',')
@@ -45,6 +46,36 @@ class MethodModelViewSet(viewsets.ModelViewSet):
                 self.serializer_class.Meta.model._meta.fields]
                 self.default_list_fields = fieldlist
         self.list_fields = flds if flds else self.default_list_fields
+
+    def partial_update(self, request, pk = None):
+        model = self.serializer_class.Meta.model
+        instance = model.objects.get(id = pk)
+        fields = list(map(lambda x: x.name, model._meta.fields))
+        data = request.data.copy()
+        if 'user' in fields:
+            request.data.update({'user': request.user})
+        for field in fields:
+            attr = data.get(field, None)
+            if attr:
+                setattr(instance, field, attr)
+                print(getattr(instance, 'text'))
+        instance.save()
+        return Response({'data': data}, status = status.HTTP_200_OK)
+
+    def update(self, request, pk = None):
+        model = self.serializer_class.Meta.model
+        instance = model.objects.get(id = pk)
+        fields = list(map(lambda x: x.name, model._meta.fields))
+        data = request.data.copy()
+        if 'user' in fields:
+            request.data.update({'user': request.user})
+        for field in fields:
+            attr = data.get(field, None)
+            if attr:
+                setattr(instance, field, attr)
+                print(getattr(instance, 'text'))
+        instance.save()
+        return Response({'data': data}, status = status.HTTP_200_OK)
 
     # Выводит список обьектов с пагинацией
     # Набор полей берет из параметра в очернем классе, либо из запроса

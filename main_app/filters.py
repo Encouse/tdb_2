@@ -53,7 +53,7 @@ class OwnerFilter(filters.BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):
         if not isinstance(request.user, AnonymousUser):
             return queryset.filter(user = request.user)
-        return queryset
+        return queryset.none()
 
 class DateTimeFilter(filters.BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):
