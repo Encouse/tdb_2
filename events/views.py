@@ -12,6 +12,7 @@ from main_app import permissions
 from main_app.pagination import TwentyPagination
 from main_app.filters import NotNullOrderingFilter, OwnerFilter, DateTimeFilter
 from . import serializers
+import dateutil.parser
 
 
 class EventViewSet(MethodModelViewSet):
@@ -36,6 +37,8 @@ class EventViewSet(MethodModelViewSet):
     def create(self, request):
         data = request.data.copy()
         data.update({'user': request.user})
+        dtm = data['datetime_end']
+        data['datetime_end'] = dateutil.parser.parse(dtm)
         obj = models.Event.objects.create(**data)
         print(obj)
         if obj:
