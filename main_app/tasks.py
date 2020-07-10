@@ -15,7 +15,7 @@ app.conf.update(BROKER_URL=os.environ.get("REDIS_URL"),
 @app.task()
 def send_event_mail(email, datetime, title):
     dtime = dateutil.parser.parse(datetime)
-    end_date = time.mktime()
+    end_date = time.mktime(dtime.timetuple())
     date_now = time.time()
     predict = 60*60
     wait_for = end_date - date_now - predict
