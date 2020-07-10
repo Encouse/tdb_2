@@ -1,6 +1,7 @@
 from celery import Celery
 from django.core.mail import send_mail
 import time
+import dateutil.parser
 from datetime import datetime
 import os
 
@@ -13,7 +14,7 @@ app.conf.update(BROKER_URL=os.environ.get("REDIS_URL"),
 
 @app.task()
 def send_event_mail(email, datetime, title):
-    dtime = time.strptime(datetime, '%Y-%m-%dT%H:%M:%S%Z')
+    dtime = dateutil.parser.parse(datetime)
     end_date = time.mktime()
     date_now = time.time()
     predict = 60*60
