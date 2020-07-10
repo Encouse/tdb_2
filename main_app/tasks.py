@@ -18,8 +18,10 @@ def send_event_mail(email, datetime_start, datetime_end, title):
     end_sec = time.mktime(dtimeend.timetuple())
     dtimestrt = dateutil.parser.parse(datetime_start)
     start_sec = time.mktime(dtimestrt.timetuple())
+    print(f'{end_sec}, {start_sec}  end/start')
     predict = 60*60
     wait_for = end_sec - start_sec - predict
+    print(f'will sleep for {wait_for}')
     time.sleep(wait_for)
     send_mail(
         f'Событие {title}',
